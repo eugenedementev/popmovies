@@ -10,6 +10,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -18,7 +19,7 @@ android {
         }
     }
     buildTypes.each {
-        it.buildConfigField('String', 'THE_MOVIE_DB_API_KEY', "\"\"")
+        it.buildConfigField('String', 'THE_MOVIE_DB_API_KEY', "\"ea89d0b81476d45908ff7e54ac09cb92\"")
     }
 }
 
@@ -28,8 +29,9 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:support-v4:23.2.1'
+    compile 'com.android.support:support-vector-drawable:23.2.1'
+    testCompile 'junit:junit:4.12'
 }

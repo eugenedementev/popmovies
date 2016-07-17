@@ -1,8 +1,6 @@
 package com.eugeneexample.popularmovies.popularmovies;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -17,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -73,11 +70,21 @@ public class MainDiscoveryFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         //TODO refactor code here
         if (item.getItemId() == R.id.action_refresh){
-            FetchMoviesTask getMovies = new FetchMoviesTask();
-            getMovies.execute();
+            updateMoviesGrid();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateMoviesGrid();
+    }
+
+    protected void updateMoviesGrid(){
+        FetchMoviesTask getMovies = new FetchMoviesTask();
+        getMovies.execute();
     }
 
     private class FetchMoviesTask extends AsyncTask<Void, Void, ArrayList<Movie>> {
@@ -86,13 +93,15 @@ public class MainDiscoveryFragment extends Fragment {
         @Override
         protected ArrayList<Movie> doInBackground(Void... params) {
             NetworkInfo networkInfo = mConnectivityManager.getActiveNetworkInfo();
-//            assert networkInfo != null;
-            if (networkInfo == null && !networkInfo.isConnected()){
-                Toast.makeText(getActivity(),String.valueOf(R.string.network_unabailable_connection),Toast.LENGTH_SHORT);
+            if (networkInfo == null || !networkInfo.isConnected()){
                 return null;
             }
             String moviesJsonString = getMoviesJSONStringFromAPI();
-            return getMovieArrayFromJSON(moviesJsonString);
+            if (moviesJsonString == null){
+                return null;
+            }else{
+                return getMovieArrayFromJSON(moviesJsonString);
+            }
         }
 
         @Override
@@ -100,6 +109,8 @@ public class MainDiscoveryFragment extends Fragment {
             if (moviesArrayList != null){
                 mMoviesAdapter.clear();
                 mMoviesAdapter.addAll(moviesArrayList);
+            }else{
+                Toast.makeText(getActivity(),getString(R.string.network_no_received_data),Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -157,6 +168,10 @@ public class MainDiscoveryFragment extends Fragment {
         }
 
         protected ArrayList<Movie> getMovieArrayFromJSON(String jsonStrin){
+            if (jsonStrin == null){
+                return null;
+            }
+
             try {
                 final String MOVIE_JSON_RESULTS = "results";
                 final String MOVIE_PARAM_ID = "id";
