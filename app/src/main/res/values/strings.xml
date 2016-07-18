@@ -11,6 +11,6 @@
     <!--This values related to the sort_order preferences-->
     <string name="pref_sort_order_entry_most_popular">by most popular</string>
     <string name="pref_sort_order_entry_top_rated">by top rated</string>
-    <string name="pref_sort_order_enty_values_most_popular">balbalba</string>
-    <string name="pref_sort_order_enty_values_top_rated">skdjfbijsbsdfbj</string>
+    <string name="pref_sort_order_enty_values_most_popular">popular</string>
+    <string name="pref_sort_order_enty_values_top_rated">top_rated</string>
 </resources>

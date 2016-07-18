@@ -2,11 +2,13 @@ package com.eugeneexample.popularmovies.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -94,20 +96,22 @@ public class MainDiscoveryFragment extends Fragment {
     }
 
     protected void updateMoviesGrid(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String sortOrderValue = sharedPreferences.getString(getString(R.string.pref_sort_order_key),getString(R.string.pref_sort_order_enty_values_most_popular));
         FetchMoviesTask getMovies = new FetchMoviesTask();
-        getMovies.execute();
+        getMovies.execute(sortOrderValue);
     }
 
-    private class FetchMoviesTask extends AsyncTask<Void, Void, ArrayList<Movie>> {
+    private class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
         private final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
 
         @Override
-        protected ArrayList<Movie> doInBackground(Void... params) {
+        protected ArrayList<Movie> doInBackground(String... params) {
             NetworkInfo networkInfo = mConnectivityManager.getActiveNetworkInfo();
             if (networkInfo == null || !networkInfo.isConnected()){
                 return null;
             }
-            String moviesJsonString = getMoviesJSONStringFromAPI();
+            String moviesJsonString = getMoviesJSONStringFromAPI(params[0]);
             if (moviesJsonString == null){
                 return null;
             }else{
@@ -125,19 +129,16 @@ public class MainDiscoveryFragment extends Fragment {
             }
         }
 
-        protected String getMoviesJSONStringFromAPI(){
+        protected String getMoviesJSONStringFromAPI(String sortOrderPreference){
             HttpURLConnection connection = null;
             BufferedReader bufferedReader = null;
             InputStream inputStream = null;
             try {
-                //TODO create with URI. It should be beautiful
-                final String TMDB_BASE_URL = "http://api.themoviedb.org/3/discover/movie?";
-                final String SORT_BY_PARAM = "sort_by";
+                final String TMDB_BASE_URL = "http://api.themoviedb.org/3/movie";
                 final String API_KEY = "api_key";
 
-                //TODO replace string values to values from settings
                 Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon().
-                        appendQueryParameter(SORT_BY_PARAM,"popularity.desc").
+                        appendEncodedPath(sortOrderPreference).
                         appendQueryParameter(API_KEY,BuildConfig.THE_MOVIE_DB_API_KEY).
                         build();
 
