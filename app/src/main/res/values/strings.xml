@@ -6,5 +6,11 @@
     <string name="pref_title_settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
     <string name="network_no_received_data">No connection to TMDB.</string>
-
+    <!--This values related to the Settings -->
+    <string name="pref_sort_order_key" translatable="false">pref_sort_order_key</string>
+    <!--This values related to the sort_order preferences-->
+    <string name="pref_sort_order_entry_most_popular">by most popular</string>
+    <string name="pref_sort_order_entry_top_rated">by top rated</string>
+    <string name="pref_sort_order_enty_values_most_popular">balbalba</string>
+    <string name="pref_sort_order_enty_values_top_rated">skdjfbijsbsdfbj</string>
 </resources>

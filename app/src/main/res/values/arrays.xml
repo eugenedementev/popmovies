@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="array_sort_order_name_list">
+        <item>@string/pref_sort_order_entry_most_popular</item>
+        <item>@string/pref_sort_order_entry_top_rated</item>
     </string-array>
     <string-array name="array_sort_order_value_list">
+        <item>@string/pref_sort_order_enty_values_most_popular</item>
+        <item>@string/pref_sort_order_enty_values_top_rated</item>
     </string-array>
 </resources>

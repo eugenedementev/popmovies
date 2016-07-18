@@ -1,7 +1,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
+        android:key="@string/pref_sort_order_key"
         android:title="@string/pref_sort_order_title"
+        android:defaultValue="@string/pref_sort_order_enty_values_most_popular"
         android:entries="@array/array_sort_order_name_list"
         android:entryValues="@array/array_sort_order_value_list"
         />
