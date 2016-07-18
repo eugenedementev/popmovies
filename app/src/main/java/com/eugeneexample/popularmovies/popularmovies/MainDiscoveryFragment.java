@@ -1,6 +1,7 @@
 package com.eugeneexample.popularmovies.popularmovies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -68,7 +69,17 @@ public class MainDiscoveryFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //TODO refactor code here
+        switch (item.getItemId()){
+            case R.id.action_refresh:
+                updateMoviesGrid();
+                break;
+            case R.id.action_settings:
+                Intent intent = new Intent(getContext(),SettingsActivity.class);
+                startActivity(intent);
+                break;
+//                TODO call setting activity
+        }
+
         if (item.getItemId() == R.id.action_refresh){
             updateMoviesGrid();
             return true;
