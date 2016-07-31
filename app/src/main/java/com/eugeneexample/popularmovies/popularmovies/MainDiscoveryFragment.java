@@ -79,7 +79,6 @@ public class MainDiscoveryFragment extends Fragment {
                 Intent intent = new Intent(getContext(),SettingsActivity.class);
                 startActivity(intent);
                 break;
-//                TODO call setting activity
         }
 
         if (item.getItemId() == R.id.action_refresh){
