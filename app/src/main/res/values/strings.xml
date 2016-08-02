@@ -14,5 +14,8 @@
     <string name="pref_sort_order_entry_top_rated">by top rated</string>
     <string name="pref_sort_order_enty_values_most_popular">popular</string>
     <string name="pref_sort_order_enty_values_top_rated">top_rated</string>
+    <string name="detail_content_descriptionposter">poster</string>
+    <string name="detail_overview">Overview</string>
+    <string name="detail_release_year">Release year</string>
 
 </resources>

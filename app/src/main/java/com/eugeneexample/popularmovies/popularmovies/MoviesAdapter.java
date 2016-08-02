@@ -1,19 +1,12 @@
 package com.eugeneexample.popularmovies.popularmovies;
 
 import android.content.Context;
-import android.net.Uri;
-import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -62,20 +55,8 @@ public class MoviesAdapter extends BaseAdapter {
             resultView = convertView;
         }
         ImageView imageView = (ImageView)resultView.findViewById(R.id.grid_item_film_image);
-
         Movie movie = mMovies.get(position);
-
-        final String TMDB_GET_IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w185/";
-        final String API_KEY = "api_key";
-
-        Uri builtUri = Uri.parse(TMDB_GET_IMAGE_BASE_URL).buildUpon().
-                appendEncodedPath(movie.getPosterPath()).
-                appendQueryParameter(API_KEY, BuildConfig.THE_MOVIE_DB_API_KEY).
-                build();
-
-        Picasso.with(mContext)
-                .load(builtUri.toString())
-                .into(imageView);
+        ImageLoader.loadPosterFromTMDB(mContext,movie.getPosterPath(),imageView);
         return resultView;
     }
 
