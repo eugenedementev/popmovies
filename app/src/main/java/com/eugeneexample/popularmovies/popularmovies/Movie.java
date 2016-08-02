@@ -3,10 +3,12 @@ package com.eugeneexample.popularmovies.popularmovies;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
+import java.io.Serializable;
+
 /**
  * Created by Eugene on 21.06.2016.
  */
-public class Movie {
+public class Movie implements Serializable{
 
     private int idFromAPI;
     private String posterPath;

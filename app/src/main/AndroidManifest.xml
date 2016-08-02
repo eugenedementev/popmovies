@@ -16,6 +16,7 @@
         <activity android:name=".MainDiscoveryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -24,7 +25,15 @@
             android:label="@string/title_activity_settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainDiscoveryActivity"/>
+                android:value=".MainDiscoveryActivity" />
+        </activity>
+        <activity
+            android:name=".MovieDetailActivity"
+            android:label="@string/title_activity_movie_detail">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainDiscoveryActivity"
+                />
         </activity>
     </application>
 

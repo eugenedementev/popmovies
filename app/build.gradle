@@ -19,7 +19,7 @@ android {
         }
     }
     buildTypes.each {
-        it.buildConfigField('String', 'THE_MOVIE_DB_API_KEY', "\"ea89d0b81476d45908ff7e54ac09cb92\"")
+        it.buildConfigField('String', 'THE_MOVIE_DB_API_KEY', "\"\"")
     }
 }
 
@@ -33,5 +33,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:support-v4:23.2.1'
     compile 'com.android.support:support-vector-drawable:23.2.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha4'
     testCompile 'junit:junit:4.12'
 }

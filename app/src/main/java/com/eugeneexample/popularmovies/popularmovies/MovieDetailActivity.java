@@ -1,22 +1,18 @@
 package com.eugeneexample.popularmovies.popularmovies;
 
-import android.os.AsyncTask;
-import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainDiscoveryActivity extends AppCompatActivity {
-    //TODO set onClickListener
+public class MovieDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_discovery);
+        setContentView(R.layout.activity_movie_detail);
         if (savedInstanceState == null){
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container,new MainDiscoveryFragment())
+                    .add(R.id.activity_movie_detail,new MovieDetailFragment())
                     .commit();
         }
     }
-
 }

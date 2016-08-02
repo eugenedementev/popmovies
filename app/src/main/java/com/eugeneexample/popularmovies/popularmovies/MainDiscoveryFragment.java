@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -37,6 +38,8 @@ public class MainDiscoveryFragment extends Fragment {
 
     private ConnectivityManager mConnectivityManager;
     private MoviesAdapter mMoviesAdapter;
+
+    public static final String ACTION_MOVIE = "MOVIE_CLASS";
 
     public MainDiscoveryFragment() {
         // Required empty public constructor
@@ -60,7 +63,14 @@ public class MainDiscoveryFragment extends Fragment {
 
         GridView gridView = (GridView)rootView.findViewById(R.id.movies_grid);
         gridView.setAdapter(mMoviesAdapter);
-
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent startMovieDetailActivity = new Intent(getActivity(),MovieDetailActivity.class);
+                startMovieDetailActivity.putExtra(ACTION_MOVIE,mMoviesAdapter.getItem(position));
+                startActivity(startMovieDetailActivity);
+            }
+        });
         return rootView;
     }
 
