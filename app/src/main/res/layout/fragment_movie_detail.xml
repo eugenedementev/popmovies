@@ -6,62 +6,86 @@
     >
 
     <!-- TODO: Update blank fragment layout -->
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="UselessParent"
-        android:id="@+id/detail_scroll_view">
+        android:id="@+id/detail_scroll_view"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <ImageView
-                android:id="@+id/detail_movie_poster"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/detail_movie_poster"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/detail_content_descriptionposter"
+                    android:scaleType="fitXY"
+                    android:adjustViewBounds="true"
+                    android:layout_weight=".5" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5">
+
+                    <TextView
+                        android:id="@+id/detail_movie_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:text="Movie title"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="40dp"
+                        android:padding="@dimen/activity_vertical_margin"
+                        android:fadingEdge="horizontal" />
+
+                    <TextView
+                        android:id="@+id/detail_release_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="30dp"
+                        android:padding="@dimen/activity_vertical_margin"
+                        android:text="1700" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <RatingBar
+                android:id="@+id/detail_ratingBar"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/detail_content_descriptionposter"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true"
-                />
+                android:numStars="10"
+                android:isIndicator="true"
+                android:theme="@style/AppTheme"
+                style="@style/Widget.AppCompat.RatingBar.Indicator"
+                android:rating="3"
+                android:paddingTop="10dp"
+                android:layout_gravity="center_vertical|center" />
 
             <TextView
-                android:id="@+id/detail_movie_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="36sp"
-                android:textColor="@android:color/white"
-                android:textAlignment="center"
-                android:background="@color/colorPrimaryDark"
-                tools:text="Movie title"
-                android:padding="@dimen/activity_vertical_margin" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/activity_vertical_margin"
-                android:text="@string/detail_release_year"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/detail_release_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/activity_vertical_margin" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/activity_vertical_margin"
+                android:padding="10dp"
                 android:text="@string/detail_overview"
-                android:textSize="18sp" />
+                android:textSize="30dp" />
 
             <TextView
                 android:id="@+id/detail_overview"
+                android:padding="@dimen/activity_vertical_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/activity_vertical_margin" />
+                android:textSize="18sp"
+                />
 
         </LinearLayout>
     </ScrollView>

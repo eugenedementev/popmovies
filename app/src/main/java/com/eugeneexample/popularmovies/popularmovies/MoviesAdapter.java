@@ -56,7 +56,7 @@ public class MoviesAdapter extends BaseAdapter {
         }
         ImageView imageView = (ImageView)resultView.findViewById(R.id.grid_item_film_image);
         Movie movie = mMovies.get(position);
-        ImageLoader.loadPosterFromTMDB(mContext,movie.getPosterPath(),imageView);
+        ImageLoader.loadPosterFromTMDB(mContext,movie.getPosterPath(),ImageLoader.QUALITY_W185,imageView);
         return resultView;
     }
 

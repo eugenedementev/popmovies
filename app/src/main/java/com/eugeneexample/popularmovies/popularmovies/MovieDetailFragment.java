@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 
@@ -48,9 +49,10 @@ public class MovieDetailFragment extends Fragment {
         Movie movie = (Movie) incomingIntent.getSerializableExtra(MainDiscoveryFragment.ACTION_MOVIE);
 
         ((TextView)resultView.findViewById(R.id.detail_movie_title)).setText(movie.getTitle());
-        ImageLoader.loadPosterFromTMDB(getContext(),movie.getPosterPath(),(ImageView) resultView.findViewById(R.id.detail_movie_poster));
+        ImageLoader.loadPosterFromTMDB(getContext(),movie.getPosterPath(),ImageLoader.QUALITY_W500,(ImageView) resultView.findViewById(R.id.detail_movie_poster));
         ((TextView)resultView.findViewById(R.id.detail_overview)).setText(movie.getOverview());
         ((TextView)resultView.findViewById(R.id.detail_release_date)).setText(movie.getRelease_date().substring(0,4));
+        ((RatingBar)resultView.findViewById(R.id.detail_ratingBar)).setRating((float) movie.getVoteAverage());
 
         return resultView;
     }

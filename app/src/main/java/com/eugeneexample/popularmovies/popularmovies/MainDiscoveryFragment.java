@@ -200,6 +200,7 @@ public class MainDiscoveryFragment extends Fragment {
                 final String MOVIE_PARAM_RELEASE_DATE = "release_date";
                 final String MOVIE_PARAM_OVERVIEW = "overview";
                 final String MOVIE_PARAM_POSTER_PATH = "poster_path";
+                final String MOVIE_PARAM_VOTE_AVERAGE = "vote_average";
 
                 ArrayList<Movie> resultArrayList = new ArrayList<Movie>();
                 JSONObject jsonObjectFromSting = new JSONObject(jsonStrin);
@@ -211,7 +212,8 @@ public class MainDiscoveryFragment extends Fragment {
                             jsonMovie.getString(MOVIE_PARAM_TITLE),
                             jsonMovie.getString(MOVIE_PARAM_RELEASE_DATE),
                             jsonMovie.getString(MOVIE_PARAM_OVERVIEW),
-                            jsonMovie.getString(MOVIE_PARAM_POSTER_PATH)
+                            jsonMovie.getString(MOVIE_PARAM_POSTER_PATH),
+                            jsonMovie.getDouble(MOVIE_PARAM_VOTE_AVERAGE)
                     ));
                 }
                 return resultArrayList;

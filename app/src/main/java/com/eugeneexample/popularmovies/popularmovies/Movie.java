@@ -15,16 +15,18 @@ public class Movie implements Serializable{
     private String title;
     private String release_date;
     private String overview;
+    private double voteAverage;
 
     public Movie() {
     }
 
-    public Movie(int idFromAPI, String title, String release_date, String overview, String posterPath) {
+    public Movie(int idFromAPI, String title, String release_date, String overview, String posterPath, double voteAverage) {
         this.idFromAPI = idFromAPI;
         this.posterPath = posterPath;
         this.title = title;
         this.release_date = release_date;
         this.overview = overview;
+        this.voteAverage = voteAverage;
     }
 
     public int getIdFromAPI() {
@@ -65,5 +67,13 @@ public class Movie implements Serializable{
 
     public void setOverview(String overview) {
         this.overview = overview;
+    }
+
+    public double getVoteAverage() {
+        return voteAverage;
+    }
+
+    public void setVoteAverage(double voteAverage) {
+        this.voteAverage = voteAverage;
     }
 }
