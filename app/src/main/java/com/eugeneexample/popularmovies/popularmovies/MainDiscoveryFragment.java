@@ -90,11 +90,6 @@ public class MainDiscoveryFragment extends Fragment {
                 startActivity(intent);
                 break;
         }
-
-        if (item.getItemId() == R.id.action_refresh){
-            updateMoviesGrid();
-            return true;
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -188,8 +183,8 @@ public class MainDiscoveryFragment extends Fragment {
             }
         }
 
-        protected ArrayList<Movie> getMovieArrayFromJSON(String jsonStrin){
-            if (jsonStrin == null){
+        protected ArrayList<Movie> getMovieArrayFromJSON(String jsonString){
+            if (jsonString == null){
                 return null;
             }
 
@@ -203,7 +198,7 @@ public class MainDiscoveryFragment extends Fragment {
                 final String MOVIE_PARAM_VOTE_AVERAGE = "vote_average";
 
                 ArrayList<Movie> resultArrayList = new ArrayList<Movie>();
-                JSONObject jsonObjectFromSting = new JSONObject(jsonStrin);
+                JSONObject jsonObjectFromSting = new JSONObject(jsonString);
                 JSONArray jsonMoviesArray = jsonObjectFromSting.getJSONArray(MOVIE_JSON_RESULTS);
                 for (int position = 0;position < jsonMoviesArray.length();position++){
                     JSONObject jsonMovie = jsonMoviesArray.getJSONObject(position);
