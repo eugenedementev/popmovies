@@ -18,5 +18,6 @@
     <string name="detail_overview">Overview</string>
     <string name="detail_release_year">Release year</string>
     <string name="detail_tag_trailers_tab">Trailers</string>
+    <string name="detail_tag_reviews_tab">Reviews</string>
 
 </resources>

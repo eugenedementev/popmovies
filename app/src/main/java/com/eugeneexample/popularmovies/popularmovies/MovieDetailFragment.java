@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -29,6 +28,105 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class MovieDetailFragment extends Fragment {
+
+    private class FetchReviewTask extends AsyncTask<Movie,Void,JSONArray>{
+
+        private final String LOG_TAG = FetchTrailersTask.class.getSimpleName();
+
+        @Override
+        protected JSONArray doInBackground(Movie... movies) {
+            HttpURLConnection connection = null;
+            BufferedReader bufferedReader = null;
+            InputStream inputStream = null;
+            Movie movie = movies[0];
+            try {
+                final String TMDB_BASE_URL = "http://api.themoviedb.org/3/movie";
+                final String API_KEY = "api_key";
+                final String REVIEWS_ENCODED_PATH = "reviews";
+
+                Uri builtUri = Uri.parse(TMDB_BASE_URL).buildUpon().
+                        appendEncodedPath(String.valueOf(movie.getIdFromAPI())).
+                        appendEncodedPath(REVIEWS_ENCODED_PATH).
+                        appendQueryParameter(API_KEY,BuildConfig.THE_MOVIE_DB_API_KEY).
+                        build();
+
+                URL url = new URL(builtUri.toString());
+
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.connect();
+
+                inputStream = connection.getInputStream();
+                if (inputStream == null)
+                    return null;
+                StringBuffer stringBuffer = new StringBuffer();
+                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while ((line = bufferedReader.readLine()) !=null){
+                    stringBuffer.append(line + "\n");
+                }
+                if (stringBuffer.length() == 0)
+                    return null;
+                String jsonString = stringBuffer.toString();
+                return getReviewsJSONArray(jsonString);
+            } catch (IOException e) {
+                Log.e(LOG_TAG,"IOException in fitching movie details",e);
+                return null;
+            } finally {
+                if (connection != null){
+                    connection.disconnect();
+                }
+                try{
+                    if (inputStream != null)
+                        inputStream.close();
+                    if (bufferedReader != null)
+                        bufferedReader.close();
+                } catch (IOException e) {
+                    Log.e(LOG_TAG,"Error closing stream",e);
+                }
+            }
+        }
+
+        @Override
+        protected void onPostExecute(JSONArray reviewArray) {
+            if (reviewArray != null){
+
+                final String JSON_AUTHOR = "author";
+                final String JSON_CONTENT = "content";
+
+                for (int i=0;i<reviewArray.length();i++){
+                    try {
+                        final JSONObject review = reviewArray.getJSONObject(i);
+                        View reviewView = getActivity().getLayoutInflater().inflate(R.layout.list_item_review,null,false);
+                        TextView authorTextView = (TextView) reviewView.findViewById(R.id.review_author_text_view);
+                        authorTextView.setText(review.getString(JSON_AUTHOR));
+                        TextView contentTextView = (TextView) reviewView.findViewById(R.id.review_content_text_view);
+                        contentTextView.setText(review.getString(JSON_CONTENT));
+
+                        LinearLayout linearLayoutInScrollView = (LinearLayout) getView().findViewById(R.id.detail_tab_reviews);
+                        linearLayoutInScrollView.addView(reviewView);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }else{
+                Toast.makeText(getActivity(),"Fetch Review. Trouble in onPostExecute. Input parameter is null", Toast.LENGTH_SHORT);
+            }
+        }
+
+        private JSONArray getReviewsJSONArray(String jsonString) {
+            if (jsonString == null)
+                return null;
+            final String JSON_RESULT = "results";
+            try {
+                JSONObject jsonObject = new JSONObject(jsonString);
+                return jsonObject.getJSONArray(JSON_RESULT);
+            } catch (JSONException e) {
+                return null;
+            }
+        }
+    }
 
     private class FetchTrailersTask extends AsyncTask<Movie, Void, JSONArray> {
 
@@ -92,7 +190,6 @@ public class MovieDetailFragment extends Fragment {
         @Override
         protected void onPostExecute(JSONArray trailersArray) {
             if (trailersArray!= null){
-                //https://www.youtube.com/watch
                 final String JSON_NAME = "name";
                 final String JSON_KEY = "key";
                 final String YOUTUBE_URL = "https://www.youtube.com/";
@@ -176,8 +273,17 @@ public class MovieDetailFragment extends Fragment {
 
         tabsWithTrailersAndReviews.addTab(trailersTab);
 
+        TabHost.TabSpec reviewsTab = tabsWithTrailersAndReviews.newTabSpec("detail_tab_reviews");
+        reviewsTab.setContent(R.id.detail_tab_reviews);
+        reviewsTab.setIndicator(getString(R.string.detail_tag_reviews_tab));
+
+        tabsWithTrailersAndReviews.addTab(reviewsTab);
+
         FetchTrailersTask getTrailers = new FetchTrailersTask();
         getTrailers.execute(movie);
+
+        FetchReviewTask getReviews = new FetchReviewTask();
+        getReviews.execute(movie);
 
         return resultView;
     }
