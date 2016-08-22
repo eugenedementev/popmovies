@@ -3,7 +3,6 @@ package com.eugeneexample.popularmovies.popularmovies;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,10 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.RatingBar;
-import android.widget.ScrollView;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,11 +27,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
 public class MovieDetailFragment extends Fragment {
-
-    private ArrayAdapter<String> mTrailersAdapter;
 
     private class FetchTrailersTask extends AsyncTask<Movie, Void, JSONArray> {
 
@@ -93,7 +87,6 @@ public class MovieDetailFragment extends Fragment {
                     Log.e(LOG_TAG,"Error closing stream",e);
                 }
             }
-//            return null;
         }
 
         @Override
@@ -112,23 +105,22 @@ public class MovieDetailFragment extends Fragment {
                         View trailerView = getActivity().getLayoutInflater().inflate(R.layout.list_item_trailer,null,false);
                         TextView textView = (TextView) trailerView.findViewById(R.id.list_item_trailer_textview);
                         textView.setText(trailer.getString(JSON_NAME));
-                        //TODO implement listener for redirecting
-                    trailerView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            try {
-                                Uri builtUri = Uri.parse(YOUTUBE_URL).buildUpon().
-                                        appendEncodedPath(WATCH_PATH).
-                                        appendQueryParameter(VIDEO_URL_PARAM,trailer.getString(JSON_KEY)).
-                                        build();
-                                Intent openTrailerIntent = new Intent(Intent.ACTION_VIEW,builtUri);
-                                startActivity(openTrailerIntent);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                        trailerView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                try {
+                                    Uri builtUri = Uri.parse(YOUTUBE_URL).buildUpon().
+                                            appendEncodedPath(WATCH_PATH).
+                                            appendQueryParameter(VIDEO_URL_PARAM,trailer.getString(JSON_KEY)).
+                                            build();
+                                    Intent openTrailerIntent = new Intent(Intent.ACTION_VIEW,builtUri);
+                                    startActivity(openTrailerIntent);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
-                    });
-                        LinearLayout linearLayoutInScrollView = (LinearLayout) getView().findViewById(R.id.detail_linear_layout);
+                        });
+                        LinearLayout linearLayoutInScrollView = (LinearLayout) getView().findViewById(R.id.detail_tab_trailers);
                         linearLayoutInScrollView.addView(trailerView);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -150,27 +142,6 @@ public class MovieDetailFragment extends Fragment {
                 return null;
             }
         }
-
-//        protected ArrayList<String> getTrailerNamesFromJSON(String jsonString){
-//            if (jsonString == null)
-//                return null;
-//            try {
-//                final String JSON_RESULT = "results";
-//                final String JSON_NAME = "name";
-//
-//                ArrayList<String> resultArray = new ArrayList<String>();
-//
-//                JSONObject jsonObject = new JSONObject(jsonString);
-//                JSONArray trailersJsonArray = jsonObject.getJSONArray(JSON_RESULT);
-//                for (int i = 0; i < trailersJsonArray.length();i++){
-//                    resultArray.add(trailersJsonArray.getJSONObject(i).getString(JSON_NAME));
-//                }
-//                return  resultArray;
-//            } catch (JSONException e) {
-//                Log.e(LOG_TAG,e.getMessage());
-//                return null;
-//            }
-//        }
     }
 
     public MovieDetailFragment() {
@@ -196,9 +167,14 @@ public class MovieDetailFragment extends Fragment {
         ((TextView)resultView.findViewById(R.id.detail_release_date)).setText(movie.getRelease_date().substring(0,4));
         ((RatingBar)resultView.findViewById(R.id.detail_ratingBar)).setRating((float) movie.getVoteAverage());
 
-//        mTrailersAdapter = new ArrayAdapter<String>(getActivity(),R.layout.list_item_trailer,R.id.list_item_trailers_textview);
-//        ListView listViewTrailers = (ListView)resultView.findViewById(R.id.detail_trailer_list);
-//        listViewTrailers.setAdapter(mTrailersAdapter);
+        TabHost tabsWithTrailersAndReviews = (TabHost) resultView.findViewById(R.id.detail_tab_host);
+        tabsWithTrailersAndReviews.setup();
+
+        TabHost.TabSpec trailersTab = tabsWithTrailersAndReviews.newTabSpec("detail_tab_trailers");
+        trailersTab.setContent(R.id.detail_tab_trailers);
+        trailersTab.setIndicator(getString(R.string.detail_tag_trailers_tab));
+
+        tabsWithTrailersAndReviews.addTab(trailersTab);
 
         FetchTrailersTask getTrailers = new FetchTrailersTask();
         getTrailers.execute(movie);

@@ -17,5 +17,6 @@
     <string name="detail_content_descriptionposter">poster</string>
     <string name="detail_overview">Overview</string>
     <string name="detail_release_year">Release year</string>
+    <string name="detail_tag_trailers_tab">Trailers</string>
 
 </resources>
